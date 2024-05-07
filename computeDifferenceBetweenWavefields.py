@@ -9,6 +9,7 @@ import struct
 import sys
 import os, fnmatch
 from grid import grid_correspondance, load_grid
+from plot import plot_difference
 
 
 ###################### Main function ############################
@@ -28,7 +29,7 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
     
     ###### Loads grid ######
     if verbose : print("\nLoading reference simulation grid ...")
-    grid_1, grid_1x, grid_1y=load_grid(sim_1+"/"+"ASCII_dump_of_grid_points.txt")
+    grid_1=load_grid(sim_1+"/"+"ASCII_dump_of_grid_points.txt")[0]
     if verbose : print("Loading other simulation grid ... \n")
     grid_2, grid_2x, grid_2y=load_grid(sim_2+"/"+"ASCII_dump_of_grid_points.txt")
     
@@ -53,8 +54,6 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
                 content2 = file2.read()
             fileOut= open((name_output+"/"+l_files1[i]), mode ='wb')
             
-            
-            if image : l_differences=[]
             for line1 in range(size):
                 
                 
@@ -79,21 +78,10 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
 
             file1.close()
             file2.close()
-            
-            if image: 
-                write_image(sim_1,  l_differences)
-                if verbose : print("     creating image")
-                
+                            
             fileOut.close()
+    if image : plot_difference(name_output, sim_1+"/"+"ASCII_dump_of_grid_points.txt", "xy", verbose)
     if verbose : print("Difference between wavefields is computed !")
-
-
-###################### Create Image ######################
-
-def write_image(sim_1, l_difference):
-    print("IMAGE CREATION NOT IMPLEMENTED YET...")
-    return None   
-    
 
 ###################### Usage ######################
 
@@ -107,11 +95,11 @@ def usage():
     print("\n     simulation_2  - path of directory where binary outputs of reference simulation and ASCII grid are stored")
     print("                       e.g. ./simu2/OUTPUT")
     
-    print("\n     output_name - created filename")
+    print("\n     output_name - directory where results are saved")
     print("                       e.g. ./test/difference.bin")
     print("     others   - s : same grid is used in both simulation")
     print("              - i : creation of a bitmap (default = false)")
-    print("              - v : prints lots of details (default ) false)")
+    print("              - v : prints lots of details (default = false)")
     print("The simulation directories should contain binary outputs of simulation and ASCII grid output")
     sys.exit(1)
     
