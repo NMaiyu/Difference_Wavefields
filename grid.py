@@ -5,7 +5,6 @@
 
 from __future__ import print_function
 import numpy as np 
-from PIL import Image
 import struct
 import sys
 import os, fnmatch
@@ -28,11 +27,19 @@ def load_grid(filename):
     grid_y=[]
     
     for i in range(size):
+        
         x,y = file.readline().split()
-        x,y = float(x), float(y)
+        x,y = int((float(x[:8]))), int((float(y[:8])))
+        
+        if x+1 in grid_x : x+=1
+        elif x-1 in grid_x : x-=1
+        else : grid_x.append(x)
+        
+        if y+1 in grid_y : y+=1
+        elif y-1 in grid_y : y-=1
+        else : grid_y.append(y)
+        
         grid.append((x,y))
-        if x not in grid_x : grid_x.append(x)
-        if y not in grid_y : grid_y.append(y)
     file.close()
     return grid, grid_x, grid_y
 
@@ -55,6 +62,8 @@ def grid_correspondance(grid_1, grid_2, grid_2x, grid_2y):
     for line_1 in range (len(grid_1)):
     
         (x,y) = grid_1[line_1]
+        xs=[]
+        ys=[]
         
         if (x in grid_2x): 
             if (y in grid_2y):
@@ -64,27 +73,31 @@ def grid_correspondance(grid_1, grid_2, grid_2x, grid_2y):
             
             else :
                 xs = [x]
-                ind_y = grid_2y.append(y).sort().index(y)
-                ys = [grid_2y[ind_y-1],grid_2y[ind_y+1]]
+                
+                ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y)))
+                ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*100))
             
         elif (y in grid_2y):
             ys = [y]
-            ind_x = grid_2x.append(x).sort().index(x)
-            xs = [grid_2x[ind_x -1], grid_2x[ind_x +1]]
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x)))
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*100))
             
         else :
-            ind_x = grid_2x.append(x).sort().index(x)
-            xs = [grid_2x[ind_x -1], grid_2x[ind_x +1]]
-            ind_y = grid_2y.append(y).sort().index(y)
-            ys = [grid_2y[ind_y-1],grid_2y[ind_y+1]]
-        
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x)))
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*100))
+            if (xs[0]-x)*(xs[1]-x)>0 : xs.pop(1)
+            
+            ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y)))
+            ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*100))
+            if (ys[0]-y)*(ys[1]-y)>0 : ys.pop(1)
         
         # Create the list of corresponding indexes and weights 
         line_2 = []
         for x_2 in xs:
             for y_2 in ys:
-                line_2.append( ((grid_2.index((x_2,y_2))), ( 1/ ((x-x_2)**2 + (y-y_2)**2) **(1/2)) ))
+                tup = ((grid_2.index((x_2,y_2))), ( 1/ ((x-x_2)**2 + (y-y_2)**2) **(1/2)) )
+                line_2.append(tup)
         
-        grid_line_2.append(line_2)
+        line1_to_line2.append(line_2)
 
     return line1_to_line2

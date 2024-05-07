@@ -28,7 +28,7 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
     
     ###### Loads grid ######
     if verbose : print("\nLoading reference simulation grid ...")
-    grid_1=load_grid(sim_1+"/"+"ASCII_dump_of_grid_points.txt")[0]
+    grid_1, grid_1x, grid_1y=load_grid(sim_1+"/"+"ASCII_dump_of_grid_points.txt")
     if verbose : print("Loading other simulation grid ... \n")
     grid_2, grid_2x, grid_2y=load_grid(sim_2+"/"+"ASCII_dump_of_grid_points.txt")
     
@@ -66,11 +66,13 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
                 else : 
                     line2 = line1_to_line2[line1]
                     (dx2, dy2) = (0,0)
+                    total_weight =0
                     for (l, w) in line2 : 
+                         total_weight+=w
                          (dx2i, dy2i) = struct.unpack("ff",content2[l*8:(l+1)*8])
                          dx2 += dx2i
                          dy2 += dy2i
-
+                    dx2, dy2 = dx2/total_weight, dy2/total_weight
                 dx, dy = dx2-dx1, dy2-dy1
                 fileOut.write(struct.pack("ff", dx, dy))
                 if image : l_differences.append((dx**2 + dy**2)**(1/2))
