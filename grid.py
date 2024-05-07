@@ -29,13 +29,15 @@ def load_grid(filename):
     for i in range(size):
         
         x,y = file.readline().split()
-        x,y = int((float(x[:8]))), int((float(y[:8])))
+        x,y = int((float(x))), int((float(y)))
         
-        if x+1 in grid_x : x+=1
+        if x in grid_x : None
+        elif x+1 in grid_x : x+=1
         elif x-1 in grid_x : x-=1
         else : grid_x.append(x)
         
-        if y+1 in grid_y : y+=1
+        if y in grid_y : None
+        elif y+1 in grid_y : y+=1
         elif y-1 in grid_y : y-=1
         else : grid_y.append(y)
         
