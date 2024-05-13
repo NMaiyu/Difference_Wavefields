@@ -102,6 +102,7 @@ def usage():
     print("              - v : prints lots of details (default = false)")
     print("              - x  : plots difference along x")
     print("              - y  : plots difference along y")
+    print("              - n  : plots relative norm difference")
     print("              Default : plots norm of difference")
     print("The simulation directories should contain binary outputs of simulation and ASCII grid output")
     sys.exit(1)
@@ -110,7 +111,7 @@ def usage():
 
 if __name__ == '__main__':
     # gets arguments
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 4:
         usage()
     
     ## input parameters
@@ -124,6 +125,7 @@ if __name__ == '__main__':
     if "v" in sys.argv[4] : verbose = True
     if "x" in sys.argv[4] : direction = "x"
     if "y" in sys.argv[4] : direction = "y"
+    if "n" in sys.argv[4] : direction = "re"
         
     compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, verbose)
 
