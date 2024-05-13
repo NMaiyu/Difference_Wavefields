@@ -9,8 +9,6 @@ import struct
 import sys
 import os, fnmatch
 import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
-from matplotlib.ticker import MaxNLocator
 from grid import load_grid 
 
 
@@ -18,7 +16,7 @@ def plot_difference(output, grid_name, direction, verbose) :
     l_files = fnmatch.filter(os.listdir(output), "wavefield*_01.bin")
     
     if verbose : print("Loading grid")
-    grid, grid_x, grid_y = load_grid(grid_name)
+    grid, grid_x, grid_y = load_grid(grid_name+"/ASCII_dump_of_grid_points.txt")
     
 
     for filename in l_files :
@@ -49,7 +47,8 @@ def plot_difference(output, grid_name, direction, verbose) :
         
         fig, ax = plt.subplots()
         
-        psm = ax.pcolormesh(X, Y, delta, vmin=0, vmax=max(delta.max(), 0.00001))
+        extrema = max(-delta.min(), delta.max(), 0.00001)
+        psm = ax.pcolormesh(X, Y, delta, vmin=-extrema, vmax=extrema, cmap="seismic")
         ax.set_title(filename)
         fig.colorbar(psm, ax=ax)
         plt.savefig(output+"/"+filename[:-3]+"png")
@@ -63,7 +62,7 @@ def usage():
     print("\n     output_name  - directory where computed data is saved")
     print("                       e.g. ./OUTPUT_difference")
     
-    print("\n     grid_name    - name of reference ASCII grid file")
+    print("\n     grid_name    - directory of reference ASCII grid file")
     print("                       e.g. ./OUTPUT_reference")
     
     print("\n     others - v  : prints a lot of details (default = false)")
