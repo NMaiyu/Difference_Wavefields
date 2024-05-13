@@ -74,13 +74,12 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
                     dx2, dy2 = dx2/total_weight, dy2/total_weight
                 dx, dy = dx2-dx1, dy2-dy1
                 fileOut.write(struct.pack("ff", dx, dy))
-                if image : l_differences.append((dx**2 + dy**2)**(1/2))
 
             file1.close()
             file2.close()
                             
             fileOut.close()
-    if image : plot_difference(name_output, sim_1+"/"+"ASCII_dump_of_grid_points.txt", "xy", verbose)
+    if image : plot_difference(name_output, sim_1, "xy", verbose)
     if verbose : print("Difference between wavefields is computed !")
 
 ###################### Usage ######################
