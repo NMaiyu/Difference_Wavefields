@@ -38,7 +38,7 @@ def plot_difference(output, grid_name, direction, verbose) :
             yval = np.where(y == yval)[0][0]
 
             
-            if direction =="xy" : delta[yval][xval] = (dx**2 + dy**2)**(1/2)
+            if direction =="norm" : delta[yval][xval] = (dx**2 + dy**2)**(1/2)
             elif direction == "x" : delta[yval][xval]=dx
             else : delta[yval][xval] = dy
 
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     output = sys.argv[1]
     grid_name = sys.argv[2]
     verbose = False
-    direction = "xy"
+    direction = "norm"
     if "v" in sys.argv[3] : verbose = True
     if "x" in sys.argv[3] : direction = "x"
     if "y" in sys.argv[3] : direction = "y"
