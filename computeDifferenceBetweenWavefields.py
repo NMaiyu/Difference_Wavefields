@@ -14,7 +14,7 @@ from plot import plot_difference
 
 ###################### Main function ############################
 
-def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, verbose):
+def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, verbose):
     """
     brief  : computes the difference between two wavefields
     param  : sim_1       - STR name of the directory with reference simulation data
@@ -52,7 +52,7 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
                 content1 = file1.read()
             with open(sim_2+"/"+l_files1[i], mode ='rb') as file2 :
                 content2 = file2.read()
-            fileOut= open((name_output+"/"+l_files1[i]), mode ='wb')
+            fileOut= open(name_output+"/"+l_files1[i], mode ='wb')
             
             for line1 in range(size):
                 
@@ -79,7 +79,8 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
             file2.close()
                             
             fileOut.close()
-    if image : plot_difference(name_output, sim_1, "xy", verbose)
+    if verbose : print("Creating images of " + direction + " differences" )
+    if image : plot_difference(name_output, sim_1, direction, verbose)
     if verbose : print("Difference between wavefields is computed !")
 
 ###################### Usage ######################
@@ -97,8 +98,11 @@ def usage():
     print("\n     output_name - directory where results are saved")
     print("                       e.g. ./test/difference.bin")
     print("     others   - s : same grid is used in both simulation")
-    print("              - i : creation of a bitmap (default = false)")
+    print("              - i : creation of an image (default = false)")
     print("              - v : prints lots of details (default = false)")
+    print("              - x  : plots difference along x")
+    print("              - y  : plots difference along y")
+    print("              Default : plots norm of difference")
     print("The simulation directories should contain binary outputs of simulation and ASCII grid output")
     sys.exit(1)
     
@@ -114,9 +118,12 @@ if __name__ == '__main__':
     sim_2 = sys.argv[2]
     name_output = sys.argv[3]
     same_grid, image, verbose = False, False, False
+    direction = "norm"
     if "s" in sys.argv[4] : same_grid = True
     if "i" in sys.argv[4] : image = True
     if "v" in sys.argv[4] : verbose = True
+    if "x" in sys.argv[4] : direction = "x"
+    if "y" in sys.argv[4] : direction = "y"
         
-    compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, verbose)
+    compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, verbose)
 
