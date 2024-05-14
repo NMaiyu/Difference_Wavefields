@@ -1,6 +1,6 @@
 # Difference_Wavefields
 
-Computes and shows the difference (Ux, Uy or norm) between binary wavefield dumps created with [![specfem2d](https://specfem2d.readthedocs.io/en/latest/)]
+Computes and shows the difference (Ux, Uy or norm) between binary wavefield dumps created with [specfem2d](https://specfem2d.readthedocs.io/en/latest/)
 It has been tested on "simple_topography_and_also_a_simple_fluid_layer", with and without the fluid layer. 
 
 ### computeDifferenceBetweenWavefields.py
