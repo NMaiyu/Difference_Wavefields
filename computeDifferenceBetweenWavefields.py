@@ -14,7 +14,7 @@ from plot import plot_difference
 
 ###################### Main function ############################
 
-def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, verbose):
+def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, interfaces, verbose):
     """
     brief  : computes the difference between two wavefields
     param  : sim_1       - STR name of the directory with reference simulation data
@@ -80,13 +80,13 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
                             
             fileOut.close()
     if verbose : print("Creating images of " + direction + " differences" )
-    if image : plot_difference(name_output, sim_1, direction, verbose)
+    if image : plot_difference(name_output, sim_1, direction, interfaces, verbose)
     if verbose : print("Difference between wavefields is computed !")
 
 ###################### Usage ######################
 
 def usage():
-    print("Usage :\n./computeDifferenceBetweenWavefields.py simulation_1 simulation_2 output_name others")
+    print("Usage :\n./computeDifferenceBetweenWavefields.py simulation_1 simulation_2 output_name interf_name others")
     print(" with")
     print("\n     simulation_1  - path of directory where binary outputs of reference simulation and ASCII grid are stored")
     print("                       should be the simulation with less elements")
@@ -97,7 +97,12 @@ def usage():
     
     print("\n     output_name - directory where results are saved")
     print("                       e.g. ./test/difference.bin")
-    print("     others   - s : same grid is used in both simulation")
+
+    print("\n     interf_name  - path of interfaces file (not mandatory)")
+    print("                       This file is initially in DATA")
+    print("                       e.g. ./OUTPUT_reference/interfaces_simple_topo_curved.dat")
+
+    print("\n     others   - s : same grid is used in both simulation")
     print("              - i : creation of an image (default = false)")
     print("              - v : prints lots of details (default = false)")
     print("              - x  : plots difference along x")
@@ -120,12 +125,18 @@ if __name__ == '__main__':
     name_output = sys.argv[3]
     same_grid, image, verbose = False, False, False
     direction = "norm"
-    if "s" in sys.argv[4] : same_grid = True
-    if "i" in sys.argv[4] : image = True
-    if "v" in sys.argv[4] : verbose = True
-    if "x" in sys.argv[4] : direction = "x"
-    if "y" in sys.argv[4] : direction = "y"
-    if "n" in sys.argv[4] : direction = "re"
+    oth=0
+    if ".dat" in sys.argv[4] : 
+        interfaces = sys.argv[4]
+        oth=1
+    
+    if len(sys.argv)>(4+oth) :
+        if "s" in sys.argv[4+oth] : same_grid = True
+        if "i" in sys.argv[4+oth] : image = True
+        if "v" in sys.argv[4+oth] : verbose = True
+        if "x" in sys.argv[4+oth] : direction = "x"
+        if "y" in sys.argv[4+oth] : direction = "y"
+        if "n" in sys.argv[4+oth] : direction = "re"
         
-    compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, verbose)
+    compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, image, direction, interfaces, verbose)
 
