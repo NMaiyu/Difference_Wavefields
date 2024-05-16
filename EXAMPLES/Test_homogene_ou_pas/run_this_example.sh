@@ -25,7 +25,7 @@ rm -rf OUTPUT_FILES/*
 cd $currentdir
 
 echo
-python3 ../../compute_difference.py OUTPUT_simple_flat  OUTPUT_simple_heterogeneous OUTPUT_FILES interface_topo_flat.dat iv
+python3 ../../compute_difference_test.py OUTPUT_simple_flat  OUTPUT_simple_heterogeneous OUTPUT_FILES interface_topo_flat.dat iv
 
 
 echo

@@ -57,7 +57,8 @@ It is possible to specify the direction (along x, y, or the norm/relative norm) 
 `python3 ./plot.py outputDirName DirName1 interface others`  
 e.g.     `python3 ./plot.py  OUTPUT_difference OUTPUT_coarse_heterogeneous interfaces_topo.dat`  
 
->outputDirName  - directory where computed data is saved  
+>outputDirName  - directory where the data to plot is saved
+               if the reference simulation directory is used here, its wavefield bump will be plotted   
                e.g. ./OUTPUT_difference  
   
 >DirName1    - directory of reference simulation  
@@ -89,6 +90,7 @@ plot.py
   Script that creates png plots of differences. 
   Can be used through compute_differencs.py,  
   but can also be used on compute_differencs.py binary results
+  if 
 
 grid.py
   Used in the two scripts abovet to load grids and compute correspondances

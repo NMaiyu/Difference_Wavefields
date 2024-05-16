@@ -25,7 +25,7 @@ rm -rf OUTPUT_FILES/*
 cd $currentdir
 
 echo
-python3 ../../compute_difference.py OUTPUT_simple_topo_normal OUTPUT_simple_topo_without_fluid OUTPUT_FILES interfaces_simple_topo_curved.dat iv
+python3 ../../compute_difference_test.py OUTPUT_simple_topo_normal OUTPUT_simple_topo_without_fluid OUTPUT_FILES interfaces_simple_topo_curved.dat ivn
 
 echo
 echo "see results in directory: OUTPUT_FILES/"

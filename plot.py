@@ -20,7 +20,7 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
     
 
     for filename in l_files :
-        if verbose : print(filename)
+        if verbose : print("Creating image for "+filename+" ...")
         with open((output_name+"/"+filename), mode ='rb') as file :
             content= file.read()
         file.close
@@ -124,6 +124,8 @@ def usage():
     print("Usage :\n./plot.py output_name simu_name interf_name others")
     print(" with")
     print("\n     output_name  - directory where computed data is saved")
+    print("                       if the reference simulation directory is used here")
+    print("                       its wavefield bump will be plotted")
     print("                       e.g. ./OUTPUT_difference")
     
     print("\n     simu_name    - directory of reference simulation")
