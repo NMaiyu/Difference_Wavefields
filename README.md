@@ -7,8 +7,9 @@ Computes and shows the difference (Ux, Uy or norm) between binary wavefield dump
   
   
 ### running an example  
-  
-  
+Run the run_this_example.sh in the choosen example directory in the terminal. 
+To change plotted information : edit the last argument l.28
+
 ### computeDifferenceBetweenWavefields.py  
 This script creates binary files storing the difference along x and y axis in a speficied directory.   
 If wanted, it is possible to also plot these (by adding 'i' in the "precisions" argument).   
@@ -19,20 +20,20 @@ The first directory should contain the output of the simulation with less elemen
   
 #### Syntax : 
 
->`python3 compute_difference.py simulation_1 simulation_2 output_name interf_name others`  
+`python3 compute_difference.py simulation_1 simulation_2 output_name interf_name others`  
 e.g.    `python3 ./compute_difference.py OUTPUT_coarse_heterogeneous OUTPUT_simple_heterogeneous OUTPUT_difference iv`  
   
->simulation_1  - `path of directory where binary outputs of reference simulation and ASCII grid are stored`  
+>simulation_1  - path of directory where binary outputs of reference simulation and ASCII grid are stored  
                  should be the simulation with less elements  
                  e.g. ./simu1/OUTPUT  
   
->simulation_2  - `path of directory where binary outputs of reference simulation and ASCII grid are stored`  
+>simulation_2  - path of directory where binary outputs of reference simulation and ASCII grid are stored  
                  e.g. ./simu2/OUTPUT  
   
->output_name - `directory where results are saved`  
+>output_name - directory where results are saved  
                  e.g. ./test/difference.bin  
   
->interf_name  - `path of interfaces file (not mandatory)`  
+>interf_name  - path of interfaces file (not mandatory)  
                  This file is initially in DATA  
                  e.g. ./OUTPUT_reference/interfaces_simple_topo_curved.dat  
   
@@ -53,16 +54,16 @@ It is possible to specify the direction (along x, y, or the norm/relative norm) 
   
 #### Syntax : 
 
->`python3 ./plot.py outputDirName DirName1 interface others`  
+`python3 ./plot.py outputDirName DirName1 interface others`  
 e.g.     `python3 ./plot.py  OUTPUT_difference OUTPUT_coarse_heterogeneous interfaces_topo.dat`  
 
->outputDirName  `- directory where computed data is saved`  
+>outputDirName  - directory where computed data is saved  
                e.g. ./OUTPUT_difference  
   
->DirName1    `- directory of reference simulation`  
+>DirName1    - directory of reference simulation  
                e.g. ./OUTPUT_reference  
   
->interface  - `path of interfaces file (not mandatory)`  
+>interface  - path of interfaces file (not mandatory)  
                This file is initially in DATA  
                e.g. ./OUTPUT_reference/interfaces_simple_topo_curved.dat  
   
@@ -104,3 +105,4 @@ grid.py
 -   struct  
 -   matplotlib.pyplot  
 4. Boundaries between materials, source and receiver are not plotted
+
