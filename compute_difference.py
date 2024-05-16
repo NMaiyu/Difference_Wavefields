@@ -79,14 +79,13 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, same_grid, 
             file2.close()
                             
             fileOut.close()
-    if verbose : print("Creating images of " + direction + " differences" )
+    if verbose : print("\nCreating images of " + direction + " differences" )
     if image : plot_difference(name_output, sim_1, direction, interfaces, verbose)
-    if verbose : print("Difference between wavefields is computed !")
 
 ###################### Usage ######################
 
 def usage():
-    print("Usage :\n./computeDifferenceBetweenWavefields.py simulation_1 simulation_2 output_name interf_name others")
+    print("Usage :\n./compute_difference.py simulation_1 simulation_2 output_name interf_name others")
     print(" with")
     print("\n     simulation_1  - path of directory where binary outputs of reference simulation and ASCII grid are stored")
     print("                       should be the simulation with less elements")
@@ -126,9 +125,12 @@ if __name__ == '__main__':
     same_grid, image, verbose = False, False, False
     direction = "norm"
     oth=0
-    if ".dat" in sys.argv[4] : 
-        interfaces = sys.argv[4]
-        oth=1
+    interfaces = False
+    
+    if len(sys.argv)>4 :
+        if ".dat" in sys.argv[4] : 
+            interfaces = sys.argv[4]
+            oth=1
     
     if len(sys.argv)>(4+oth) :
         if "s" in sys.argv[4+oth] : same_grid = True

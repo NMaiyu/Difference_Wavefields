@@ -12,21 +12,21 @@ import matplotlib.pyplot as plt
 from grid import load_grid 
 
 
-def plot_difference(output, grid_name, direction,interfaces, verbose) : 
-    l_files = fnmatch.filter(os.listdir(output), "wavefield*_01.bin")
+def plot_difference(output_name, simu_name, direction,interfaces, verbose) : 
+    l_files = fnmatch.filter(os.listdir(output_name), "wavefield*_01.bin")
     
     if verbose : print("Loading grid")
-    grid, grid_x, grid_y = load_grid(grid_name+"/ASCII_dump_of_grid_points.txt")
+    grid, grid_x, grid_y = load_grid(simu_name+"/ASCII_dump_of_grid_points.txt")
     
 
     for filename in l_files :
         if verbose : print(filename)
-        with open((output+"/"+filename), mode ='rb') as file :
+        with open((output_name+"/"+filename), mode ='rb') as file :
             content= file.read()
         file.close
         
         if direction == "re" : 
-            with open((grid_name+"/"+filename), mode ='rb') as file :
+            with open((simu_name+"/"+filename), mode ='rb') as file :
                 content_ref= file.read()
             file.close
         
@@ -70,13 +70,15 @@ def plot_difference(output, grid_name, direction,interfaces, verbose) :
         
         if interfaces : 
             plot_points(interfaces, ax)
-        plot_receivers(grid_name,ax)
-        plot_sources(grid_name,ax)
+        plot_receivers(simu_name,ax)
+        plot_sources(simu_name,ax)
 
         ax.set_title(filename)
-        fig.colorbar(psm, ax=ax)
+        if direction !="re" : label = "Difference in "+direction
+        else : label = "Relative difference in norm"
+        fig.colorbar(psm, ax=ax, label=label)
         plt.figure(fig,figsize=(8,6), dpi=200)
-        plt.savefig(output+"/"+filename[:-3]+"png", dpi=200)
+        plt.savefig(output_name+"/"+filename[:-3]+"png", dpi=200)
 
 
 def plot_points(interfaces, ax):
@@ -98,17 +100,17 @@ def plot_points(interfaces, ax):
             Y=np.append(Y,float(y))
         ax.plot(X,Y,'-',color='black')
 
-def plot_sources(grid_name,ax):
+def plot_sources(simu_name,ax):
     X,Y= np.array([]), np.array([])
-    f_sources = open(grid_name+"/for_information_SOURCE_actually_used", mode = "r")
+    f_sources = open(simu_name+"/for_information_SOURCE_actually_used", mode = "r")
     for source in f_sources :
         x,y = source.split()
         X=np.append(X,float(x))
         Y=np.append(Y,float(y))
     ax.scatter(X,Y, marker='x',color='orange')
 
-def plot_receivers(grid_name, ax):
-    f_receivers = open(grid_name+"/for_information_STATIONS_actually_used", mode = "r")
+def plot_receivers(simu_name, ax):
+    f_receivers = open(simu_name+"/for_information_STATIONS_actually_used", mode = "r")
     X,Y = np.array([]), np.array([])
     for receiver in f_receivers :
         receiver = receiver.split()
@@ -147,8 +149,8 @@ if __name__ == '__main__':
         usage()
     
     ## input parameters
-    output = sys.argv[1]
-    grid_name = sys.argv[2]
+    output_name = sys.argv[1]
+    simu_name = sys.argv[2]
     verbose = False
     direction = "norm"
     interfaces = False
@@ -164,5 +166,5 @@ if __name__ == '__main__':
         if "n" in sys.argv[3+others] : direction = "re"
     
         
-    plot_difference(output, grid_name, direction ,interfaces,verbose)
+    plot_difference(output_name, simu_name, direction ,interfaces,verbose)
 

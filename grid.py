@@ -77,20 +77,20 @@ def grid_correspondance(grid_1, grid_2, grid_2x, grid_2y):
                 xs = [x]
                 
                 ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y)))
-                ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*100))
+                ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*10000))
             
         elif (y in grid_2y):
             ys = [y]
             xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x)))
-            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*100))
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*10000))
             
         else :
             xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x)))
-            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*100))
+            xs.append(min(grid_2x, key=lambda x_listed:abs(x_listed-x) if x_listed!=xs[0] else x_listed*10000))
             if (xs[0]-x)*(xs[1]-x)>0 : xs.pop(1)
             
             ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y)))
-            ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*100))
+            ys.append(min(grid_2y, key=lambda y_listed:abs(y_listed-y) if y_listed!=ys[0] else y_listed*10000))
             if (ys[0]-y)*(ys[1]-y)>0 : ys.pop(1)
         
         # Create the list of corresponding indexes and weights 
