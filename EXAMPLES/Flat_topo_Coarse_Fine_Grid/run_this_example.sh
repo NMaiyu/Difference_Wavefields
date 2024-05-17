@@ -19,15 +19,15 @@ echo images       : relative norm difference
 echo step         : 10
 echo 
 
-mkdir -p OUTPUT_FILES
+mkdir -p OUTPUT_FILES_Y
 
 # cleans output files
-rm -rf OUTPUT_FILES/*
+rm -rf OUTPUT_FILES_Y/*
 
 cd $currentdir
 
 echo
-python3 ../../compute_difference.py OUTPUT_coarse_heterogeneous OUTPUT_simple_heterogeneous OUTPUT_FILES 10 interface_topo_flat.dat iv
+python3 ../../compute_difference.py OUTPUT_coarse_heterogeneous OUTPUT_simple_heterogeneous OUTPUT_FILES_Y 10 interface_topo_flat.dat ivy
 
 
 echo
