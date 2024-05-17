@@ -49,8 +49,8 @@ e.g.    `python3 ./compute_difference.py OUTPUT_coarse_heterogeneous OUTPUT_simp
           - v : prints lots of details (default = false)  
           - x  : plots difference along x  
           - y  : plots difference along y  
-          - n  : plots relative norm difference  
-          Default : plots norm of difference  
+          - n  : plots difference's norm  
+          Default : plots relative norm difference  
           - p  : set a percentile
 
 >(percentile) 
@@ -87,8 +87,8 @@ e.g.     `python3 ./plot.py  OUTPUT_difference OUTPUT_coarse_heterogeneous inter
           Plot types (only one plot type is applied at once)  
           - x  : plots difference along x  
           - y  : plots difference along y  
-          - n  : plots relative norm difference  
-          Default : plots norm of difference  
+          - n  : plots norm difference  
+          Default : plots relative norm difference  
 
 
 percentile 

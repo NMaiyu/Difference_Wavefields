@@ -127,8 +127,8 @@ def usage():
     print("              - v : prints lots of details (default = false)")
     print("              - x  : plots difference along x")
     print("              - y  : plots difference along y")
-    print("              - n  : plots relative norm difference")
-    print("              Default : plots norm of difference")
+    print("              - n  : plots difference's norm")
+    print("              Default : plots relative norm difference")
     print("The simulation directories should contain binary outputs of simulation and ASCII grid output")
     print("              - p  : set a percentile")
 
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     name_output = sys.argv[3]
     step = int(sys.argv[4])
     image, verbose = False, False
-    direction = "norm"
+    direction = "re"
     percentile =0.1
     oth=0
     interfaces = False
@@ -165,7 +165,7 @@ if __name__ == '__main__':
         if "v" in sys.argv[5+oth] : verbose = True
         if "x" in sys.argv[5+oth] : direction = "x"
         if "y" in sys.argv[5+oth] : direction = "y"
-        if "n" in sys.argv[5+oth] : direction = "re"
+        if "n" in sys.argv[5+oth] : direction = "norm"
         if "p" in sys.argv[5+oth] : percentile = float(sys.argv[6+oth])
         
     compute_difference_between_wavefields(sim_1, sim_2, name_output,percentile, step, image, direction, interfaces, verbose)

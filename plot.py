@@ -69,9 +69,8 @@ def plot_difference(output_name,percentile, direction, interfaces, verbose) :
         ### Plot ###
         fig, ax = plt.subplots()
         delta = delta[:-1, :-1]
-        perc = 1
         X, Y = np.meshgrid(x,y)
-        extrema =max(np.percentile(delta, 100 - perc), 0.00001, -np.percentile(delta, perc))
+        extrema =max(np.percentile(delta, 100 - percentile), 0.00001, -np.percentile(delta, percentile))
         
         # Create colormesh
         if direction == "x" or direction == "y" :
@@ -193,7 +192,7 @@ if __name__ == '__main__':
         if "x" in sys.argv[2+others] : direction = "x"
         if "y" in sys.argv[2+others] : direction = "y"
         if "n" in sys.argv[2+others] : direction = "norm"
-        if "p" in sys.argv[2+others] : percentile = sys.argv[2+others]
+        if "p" in sys.argv[2+others] : percentile = float(sys.argv[3+others])
     
         
     plot_difference(output_name, percentile, direction ,interfaces,verbose)
