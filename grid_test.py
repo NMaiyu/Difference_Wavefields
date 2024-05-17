@@ -33,10 +33,10 @@ def load_grid(filename):
 
 def create_grid_file(grid_x, grid_y, filename):
     file = open(filename, mode ='w')
-    file.writelines(["       "+str((len(grid_x)-1)*(len(grid_y)-1))+"\n"])
-    for i in range(len(grid_x)-1):
-        for j in range(len(grid_y)-1):
-            file.writelines(["   "+str(grid_x[i]) + "        "+str(grid_y[j])+"        \n"])
+    file.writelines(["       "+str((len(grid_x))*(len(grid_y)))])
+    for i in range(len(grid_x)):
+        for j in range(len(grid_y)):
+            file.writelines(["\n   "+str(float(grid_x[i])) + "        "+str(float(grid_y[j]))+"        "])
     file.close
 
     

@@ -7,7 +7,7 @@ import struct
 import sys
 import os, fnmatch
 import matplotlib.pyplot as plt
-from grid import load_grid 
+from grid_test import load_grid 
 
 
 def plot_difference(output_name, simu_name, direction,interfaces, verbose) : 
@@ -24,24 +24,22 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
         file.close
         
         if direction == "re" : 
-            with open((simu_name+"/"+filename), mode ='rb') as file :
+            with open((name_output+"_xy_projection/"+filename), mode ='rb') as file :
                 content_ref= file.read()
             file.close
         
         size = int(len(content)/8)
         
-        delta = np.zeros((grid[-1][0], grid[-1][1]))
-        x = np.array(grid[:][0])
-        y = np.array(grid[:][1])
-        print(grid)
+        x = np.array(sorted(set([point[0] for point in grid])))
+        y = np.array(sorted(set([point[1] for point in grid])))
+        delta = np.zeros((len(y),len(x)))
         for line in range(size):
             (dx, dy) = struct.unpack("ff",content[line*8:(line+1)*8])
             if direction == "re" :
                 (xref, yref) = struct.unpack("ff", content_ref[line*8:(line+1)*8])
             xval,yval = grid[line]
-            
-            xval = np.where(x == xval)[0][0]
-            yval = np.where(y == yval)[0][0]
+            xval = np.where(x==xval)[0][0]
+            yval=np.where(y==yval)[0][0]
 
             
             if direction =="norm" : delta[yval][xval] = (dx**2 + dy**2)**(1/2)
@@ -53,7 +51,7 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
                 else : delta[yval][xval] = (dx**2 + dy**2)**(1/2)
 
 
-        delta = delta[:-1, :-1]
+        delta = delta[1:, 1:]
         
         fig, ax = plt.subplots()
         
