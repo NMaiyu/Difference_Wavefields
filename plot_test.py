@@ -24,7 +24,7 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
         file.close
         
         if direction == "re" : 
-            with open((name_output+"_xy_projection/"+filename), mode ='rb') as file :
+            with open((output_name+"/reference_projection_"+filename), mode ='rb') as file :
                 content_ref= file.read()
             file.close
         
@@ -48,15 +48,15 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
             else : 
                 if ((xref**2 + yref**2)**(1/2))!=0 :
                     delta[yval][xval] = (dx**2 + dy**2)**(1/2)/ (xref**2 + yref**2)**(1/2)
-                else : delta[yval][xval] = (dx**2 + dy**2)**(1/2)
+                else : delta[yval][xval] = -1
 
 
-        delta = delta[1:, 1:]
-        
+        delta = delta[:-1, :-1]
         fig, ax = plt.subplots()
         
         X, Y = np.meshgrid(x,y)
-        extrema = max(-delta.min(), delta.max(), 0.00001)
+        extrema =max(np.percentile(delta, 90), 0.00001, -np.percentile(delta, 0.1))
+
         if direction == "x" or direction == "y" :
             psm = ax.pcolormesh(X, Y, delta, vmin=-extrema, vmax=extrema, cmap="seismic")
         else :
@@ -72,7 +72,7 @@ def plot_difference(output_name, simu_name, direction,interfaces, verbose) :
 
         ax.set_title(filename)
         if direction !="re" : label = "Difference in "+direction
-        else : label = "Relative difference in norm"
+        else : label = "Norm relative difference"
         fig.colorbar(psm, ax=ax, label=label)
         plt.figure(fig,figsize=(8,6), dpi=200)
         plt.savefig(output_name+"/"+filename[:-3]+"png", dpi=200)

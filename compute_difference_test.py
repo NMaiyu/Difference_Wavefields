@@ -41,7 +41,6 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, step, same_
     zmax = max(grid_1[i][1] for i in range(size))+step
 
     grid_x, grid_y = np.mgrid[0:xmax:step, 0:zmax:step]
-    # TODO : mettre en entrée le step pour le maillage en argument !!
 
 
     
@@ -66,21 +65,18 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, step, same_
                 d2 = np.array([struct.unpack("ff",content2[l*8:(l+1)*8]) for l in range(len(grid_2))])
             fileOut= open(name_output+"/"+l_files1[i], mode ='wb')
             if direction=="re" : 
-                file1_projection = open(name_output+"_xy_projection/"+l_files1[i],mode="wb")
+                file1_projection = open(name_output+"/reference_projection_"+l_files1[i],mode="wb")
 
             if same_grid : 
                 d= d2-d1
                 dx = griddata(grid_1, [point[0] for point in d], (grid_x, grid_y), method = 'linear')[0]
                 dy = griddata(grid_1, [point[1] for point in d], (grid_x, grid_y), method = 'linear')[0]
-                
             else : 
                 d2_x = griddata(grid_2, [point[0] for point in d2], (grid_x, grid_y), method = 'linear')
                 d2_y = griddata(grid_2, [point[1] for point in d2], (grid_x, grid_y), method = 'linear')
-                d2 = np.array([(d2_x[i], d2_y[i]) for i in range(len(d2_x))])
                 
                 d1_x = griddata(grid_1, [point[0] for point in d1], (grid_x, grid_y), method = 'linear')
                 d1_y = griddata(grid_1, [point[1] for point in d1], (grid_x, grid_y), method = 'linear')
-                d1 = np.array([(d1_x[i], d1_y[i]) for i in range(len(d1_x))])
                 
                 dx = d2_x - d1_x
                 dy = d2_y - d1_y
@@ -89,14 +85,18 @@ def compute_difference_between_wavefields(sim_1, sim_2, name_output, step, same_
 
             dx = np.reshape(dx, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
             dy = np.reshape(dy, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
+            
+            if direction=="re": 
+                d1_x = np.reshape(d1_x, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
+                d1_y = np.reshape(d1_y, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
+            
             for i in range(len(dx)): 
                 if np.isnan(dx[i]) : dx[i]=0
                 if np.isnan(dy[i]) : dy[i]=0
                 fileOut.write(struct.pack("ff", dx[i], dy[i]))
                 if direction=="re":
-                    d1_x = np.reshape(d1_x, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
-                    d1_y = np.reshape(d1_y, (1,len(grid_x[:,0])*len(grid_y[0,:])))[0]
-                    
+                    if np.isnan(d1_x[i]) : d1_x[i]=0
+                    if np.isnan(d1_y[i]) : d1_y[i]=0
                     file1_projection.write(struct.pack("ff",d1_x[i], d1_y[i]))
 
 
